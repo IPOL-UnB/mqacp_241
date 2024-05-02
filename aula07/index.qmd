@@ -1,0 +1,384 @@
+---
+title: "Aula 07 - Visualização de dados: ggplot e extensões"
+author: "Frederico Bertholini"
+subtitle: "Métodos Quantitativos Aplicados à Ciência Política"
+execute:
+    echo: true
+    eval: true
+    warning: false
+format: 
+    revealjs:
+      self-contained: true
+      lang: pt-BR
+      toc: true
+      toc-depth: 1
+   #   theme: moon
+      footer: IPOL/UnB
+   #   logo: imgs/logo.png
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T,eval=T)
+```
+
+## Rode seus pacotes!
+
+```{r}
+pacman::p_load("tidyverse",
+               "haven",
+               "lubridate",         
+               "janitor",
+               "readxl",
+               "stringr", 
+               "magrittr",
+               "srvyr",
+               "survey")
+```
+
+# Visualização de dados
+
+## onde estamos?
+
+![](imgs/data-science-communicate.png)
+
+## Uma exibição gráfica deve (1/2)
+
+Mostrar os dados
+
+Induzir o observador a pensar em sua substância, não em metodologia ou tecnologia de produção
+
+Evitar distorcer o que os dados dizem
+
+Apresentar muitos números em pequenos espaços
+
+Tornar grandes conjuntos de dados coerentes
+
+## Uma exibição gráfica deve (2/2)
+
+Encorajar o observador a comparar diferentes partes dos dados
+
+Revelar diferentes níveis de detalhamento dos dados
+
+Servir a um propósito claro e razoável: descrição, exploração, tabulação ou decoração
+
+Estar integrada com as descrições estatísticas e verbais do conjunto de dados
+
+## 4 princípios (Edward Tufte)
+
+Miniaturas Múltiplas
+
+Menor diferença efetiva
+
+Causalidade (Respondendo a pergunta: "Comparado com o quê?")
+
+Contexto
+
+## 
+
+![](imgs/ideas_ink_space_time.png)
+
+## O que você quer mostrar?
+
+![Andrew Abela Chart chooser](imgs/Pic_2.png)
+
+## 
+
+[![](imgs/abela-chart-chooser.jpg)](https://www.techprevue.com/decision-tree-perfect-visualisation-data/)
+
+[Animado](https://www.youtube.com/watch?v=00zjDdXUcy4)
+
+## Design Principles
+
+Seguir princípios de design pode ajudar a aumentar a qualidade das visualizações:
+
+```         
+- Gerando apresentação eficaz de informações
+
+- Evitando distração e confusão, reduzindo a carga cognitiva
+
+- Agregando valor estético
+```
+
+Alguns princípios selecionados
+
+-   Proporção dados-tinta (data-ink ratio)
+
+-   Densidade de dados (data density)
+
+-   Heurística de cores (color heuristics)
+
+-   Lixo gráfico (chartjunk)
+
+
+## Proporção dados-tinta 
+
+Boas representações gráficas maximizam data-ink e minimizam, tanto quanto possível, non-data-ink.
+
+ - Non-data-ink: escalas, bordas, fundos
+
+
+##   Densidade de dados 
+
+A densidade de dados de um gráfico é a proporção do tamanho total do gráfico dedicado à exibição de dados. (Tufte, 1983)
+
+ - Semelhante ao Data-Ink Ratio, Tufte prefere visualizações com alta densidade de dados.
+
+ - Ele afirma que a maioria dos gráficos pode ser reduzida sem perder legibilidade ou informações.
+
+##   Heurística de cores 
+
+Contraste e analogia são os princípios que definem o design de cores.
+
+- As cores contrastantes são diferentes, as cores análogas são semelhantes.
+
+- O contraste chama a atenção, a analogia agrupa.
+
+As informações codificadas por cores devem ser legíveis.
+
+- Legibilidade: diferença entre as cores de primeiro plano e de fundo
+
+
+##   Lixo gráfico 
+
+![](imgs/chartjunk.png)
+
+## Princípios
+
+-   O que você quer mostrar?
+
+-   Elementos que podem **destacar** ou **confundir** o que você quer mostrar.
+
+-   vamos tentar alternar "teoria" com live code
+
+-   Ah, mas eu posso usar base R? Poder, pode...
+
+## Com base R
+
+```{r}
+plot(mtcars$wt, mtcars$mpg)
+```
+
+## Com ggplot
+
+```{r}
+mtcars %>% mutate(vs = factor(vs)) %>%
+  ggplot(aes(x = wt, y = mpg,color=vs)) +
+  geom_point() +
+  theme_minimal()
+```
+
+# ggplot
+
+## Recursos
+
+-   [R Graphics Cookbook](https://r-graphics.org/)
+
+-   [R Graph Gallery](https://www.r-graph-gallery.com/)
+
+-   [STHDA](http://www.sthda.com/english/wiki/be-awesome-in-ggplot2-a-practical-guide-to-be-highly-effective-r-software-and-data-visualization)
+
+-   [Fundamentals of Data Visualization](https://clauswilke.com/dataviz/)
+
+-   [r-statistics](http://r-statistics.co/ggplot2-cheatsheet.html)
+
+-   [Extensões](https://exts.ggplot2.tidyverse.org/gallery/)
+
+## Elementos do ggplot
+
+-   Dados (`data =`)
+
+-   Geometrias (`geom_`)
+
+-   Estéticas (`aes()`)
+
+-   Escalas (estética) (`scale_`)
+
+-   Escalas (eixos) (`scale_x`)
+
+-   Tema
+
+-   Facet
+
+## Dados `data =`
+
+-   Dado empilhado?
+
+-   Cada coluna será uma entrada!
+
+## Geometrias `geom_`
+
+-   geom\_`tipo_de_geometria`
+
+-   Recursos +
+
+-   [manual ggplot - geometrias](https://ggplot2.tidyverse.org/reference/index.html#geoms)
+
+## Estéticas `aes()`
+
+-   `x` (`xmax` e `xmin`)
+
+-   `y`(`ymax` e `ymin`)
+
+-   `color`
+
+-   `fill`
+
+-   `shape`
+
+-   `group`
+
+-   `size`
+
+## Escalas (estética) `scale_`
+
+-   `scale_color_xx`
+
+-   `scale_fill_xx`
+
+-   `scale_shape_xx`
+
+## Escalas (eixos) `scale_x`
+
+-   Contínua `scale_x_continuous`
+
+-   Discreta `scale_x_discrete`
+
+-   Tempo `scale_yearmon`
+
+-   Série de tempo `zoo`e `lubridate` --\> `scale_yearmon`
+
+## Tema
+
+-   Customização total da visualização
+
+-   Eixos
+
+-   Texto `element_text`
+
+-   linhas de grade
+
+## Facet
+
+-   facet_grid
+
+-   facet_wrap
+
+## Adicionais
+
+Gráficos com interatividade:
+
+-   [ggiraph](https://davidgohel.github.io/ggiraph/articles/offcran/using_ggiraph.html)
+
+-   [plotly (`ggplotly`)](https://plotly-r.com/index.html)
+
+Combinação de gráficos
+
+-   [patchwork](https://patchwork.data-imaginist.com/articles/patchwork.html)
+
+-   [cowplot](https://wilkelab.org/cowplot/articles/introduction.html)
+
+## Exercício 1
+
+Lembram as bases de bancadas e coligações que usamos para fazer o join?
+
+Agora vamos criar um gráfico de barras com:
+
+-   o tamanho das bancadas como tamanho das barras e
+
+-   colorindo de acordo com o presidente que apoiam
+
+```{r}
+# Criando data.frame com join
+data_colig <- read_rds("dados/bancadas.rds") %>%
+  left_join(read_excel("dados/coligacoes.xlsx"))
+
+```
+
+## Resolução
+
+```{r}
+(g.colig <-
+   data_colig %>%
+  ggplot() +
+  geom_bar(aes(x=size,y=party,fill=president),stat = "identity")
+ )
+```
+
+## Adicionando camadas
+
+Live coding brincando com camadas no objeto g.colig
+
+## Exercício 2
+
+-   Carregue os dados de exemplo do pacote survey `data(api)`, use o data.frame `apisrs`
+
+-   Crie o objeto `tbl_svy` com o nome `amostra_expandida` expandindo a amostra aleatória simples usando apenas a variável (coluna) "pw", contendo o peso amostral. Dica: execute `as_survey(weight=pw)`.
+
+-   Usando a variável `stype` crie uma nova variável indicando se a escola é de nível fundamental (categorias **E** e **M** de `stype`) ou de nível médio (categoria *H* de `stype`). Dica: use `mutate`e `case_when`.
+
+-   Faça um gráfico de barras comparando a variação média das notas de 1999 (`api99`) e 2000 (`api00`) por nível e utilize as estimativas intervalares. Dica: olhe o código da aula 07, utilize `geom_errorbar` para a estimativa intervalar.
+
+## Resolução
+
+```{r,eval=T,echo=T}
+
+data(api)
+
+amostra_expandida <- apisrs %>% 
+  as_survey(weight = pw) %>%
+  mutate(nivel=case_when(
+    stype=="E"~"Fundamental",
+    stype=="M"~"Fundamental",
+    stype=="H"~"Médio"
+  ))
+
+```
+
+## 
+
+```{r,eval=T,echo=T}
+
+out <- amostra_expandida %>%
+  group_by(nivel) %>%
+  summarise(api_diff = 
+              survey_mean(api00 - api99, vartype = "ci"))
+
+```
+
+## 
+
+```{r,eval=T,echo=T}
+
+grafico <- out %>% 
+  ggplot(aes(x = nivel, y = api_diff, 
+             fill = nivel,color=nivel,
+                       ymax = api_diff_upp, 
+             ymin = api_diff_low)) +
+  geom_bar(stat = "identity",alpha=0.6) +
+  geom_errorbar(width = 0,size=3) 
+
+```
+
+## 
+
+```{r,eval=T}
+
+grafico 
+
+```
+
+## 
+
+```{r,eval=T}
+
+grafico + 
+  labs(y="Variação das notas",x="",color="Nível",fill="Nível") + 
+  theme_minimal()
+
+```
+
+## Live coding
+
+Capítulo livro: Identity Versus Fear of Death: Political Polarization Under the COVID-19 Pandemic in Brazil
+
+Paper APSA 2022: Fried, broiled, smoked: pork is all everybody loves: The allocation of pork to where it is needed?
