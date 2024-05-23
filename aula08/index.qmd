@@ -1,0 +1,321 @@
+---
+title: "Aula 08 - Pesquisa reproduzível"
+author: "Frederico Bertholini"
+subtitle: "Métodos Quantitativos Aplicados à Ciência Política"
+execute:
+    echo: true
+    eval: true
+    warning: false
+format: 
+    revealjs:
+      self-contained: true
+      lang: pt-BR
+      toc: true
+      toc-depth: 1
+   #   theme: moon
+      footer: IPOL/UnB
+   #   logo: imgs/logo.png
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T,eval=T)
+```
+
+## Rode seus pacotes!
+
+```{r}
+pacman::p_load("tidyverse",
+               "haven",
+               "lubridate",         
+               "janitor",
+               "readxl",
+               "stringr", 
+               "magrittr",
+               "srvyr",
+               "survey")
+```
+
+# Pesquisa reproduzível
+
+## Por quê?
+
+- Pra ciência
+
+- Pra você
+
+## Ferramentas
+
+- R e RStudio (ok)
+
+- Github
+
+- knitr e rmarkdown
+
+- LaTeX
+
+
+## Fluxo de trabalho
+
+1. Coleta
+
+2. Análise
+
+3. Comunicação
+
+
+##
+
+
+```{r, out.width="100%", echo=FALSE, fig.align='center',eval=T}
+knitr::include_graphics("imgs/fluxo_gandrud.png")
+```
+
+
+## Dicas
+
+
+1. Documente tudo!
+
+2. Tudo é um arquivo (de texto).
+
+3. Todos os arquivos devem ser legíveis (por humanos).
+
+4. Relacione explicitamente seus arquivos.
+
+5. Tenha um plano para organizar, armazenar e disponibilizar seus arquivos.
+
+
+## Trabalhando com projetos
+
+Gerenciamento de arquivos: caminhos relativos e não absolutos
+
+- Onde guardar seus projetos?
+
+
+# Versionando projetos
+
+##
+
+
+```{r, out.width="80%", echo=FALSE, fig.align='center',eval=T}
+knitr::include_graphics("imgs/fluxo_github_rstudio.png")
+```
+
+
+## Passo-a-passo
+
+1. Repositório: Criação de repositório do projeto no Github
+
+2. .Rproj: Criação do Projeto no RStudio
+
+3. Commit: Editando e “Commitando” as mudanças no código
+
+4. Push: Subindo os commits para o Github
+
+5. Pull: Baixando o estado atual do projeto
+
+
+## Caso tenha dificuldade
+
+[Beatriz Milz - RLadies](https://beatrizmilz.github.io/RLadies-Git-RStudio-2019/#1)
+
+[Curso R](https://www.curso-r.com/blog/2017-07-17-rstudio-e-github/)
+
+
+```{r , include=FALSE}
+knitr::opts_chunk$set(echo = T,eval=T)
+lapply(c("tidyverse","haven","lubridate","janitor","readxl",
+                     "stringr","knitr", "magrittr","srvyr","survey","rvest"),require,character.only=T)
+```
+## Rode seus pacotes!
+
+```{r,eval=F}
+lapply(c("tidyverse","haven","lubridate",
+         "janitor","readxl",
+          "stringr", "magrittr","srvyr",
+         "survey"),require,character.only=T)
+```
+
+
+## onde estamos?
+
+![](imgs/data-science-communicate.png)
+
+
+# RMarkdown
+
+## O que é?
+
+- Comunicar com os tomadores de decisão, 
+
+  -- que querem se concentrar nas conclusões, não no código por trás da análise.
+
+- Colaborar com outros cientistas de dados, 
+
+  -- interessados em suas conclusões e como você as alcançou (ou seja, o código).
+
+- um caderno de laboratório moderno, 
+
+  -- onde você pode anotar não apenas o que fez, mas também o que pretende.
+
+O R Markdown integra vários pacotes R e ferramentas externas. então, use o cheatsheets:
+
+[R Markdown Cheat Sheet](https://github.com/rstudio/cheatsheets/raw/master/rmarkdown-2.0.pdf)
+
+[R Markdown Reference Guide](https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf)
+
+##
+
+![](imgs/rmarkdown)
+
+
+##
+
+![](imgs/rmarkdown-reference.pdf)
+
+
+
+## Lógica, instalação e recursos adicionais
+
+- Pandoc e knitr
+
+- LaTeX
+
+![](imgs/sistema.png)
+
+
+## O básico
+
+Cabeçalho
+
+  -- opções e possibilidades
+
+Escrita
+
+Chunks
+
+  -- opções
+  -- nomes
+
+Formatos de saída
+
+## Saídas
+
+Documentos estáticos
+
+Documentos Interativos
+
+Dashboards
+
+Apresentações
+
+Livros
+
+Sites
+
+Modelos
+
+
+##
+
+[Site do RMarkdown](https://rmarkdown.rstudio.com/)
+
+IMPORTANTE!
+
+[Galeria para replicação](https://rmarkdown.rstudio.com/gallery.html)
+
+
+
+## Documentos
+
+- documentos HTML para publicar na web
+
+- documentos PDF para impressão. Example Code
+
+- documents Microsoft Word para fluxos de trabalho no Office
+
+- Documentos de estilo Tufte
+
+
+## Documentos Interativos
+
+
+- Combine R Markdown with htmlwidgets or the shiny package to make interactive documents.
+
+- Add interactive graphics with htmlwidgets, such as the leaflet map widget.
+
+- Embed htmlwidgets such as dygraphs and datatables directly into your reports.
+
+- Shiny components and htmlwidgets will work in any HTML based output, such as a file, slide show or dashboard.
+
+## Dashboards
+
+- Usar flexdashboard para criar dashboards com gauges e value boxes.
+
+- Adicionar gráficos interativos a um dashboard com htmlwidgets.
+
+- Organizar dashboards em um storyboard.
+
+## Apresentações
+
+- Criar slides pdf slides com Beamer.
+
+- Create slides HTMLcom Slidy.
+
+- Create slides HTMLcom ioslides.
+
+- Create slides HTMLcom reveal.js. 
+
+## Livros
+
+[O próprio Cookbook](https://bookdown.org/yihui/rmarkdown-cookbook/)
+
+## Sites
+R Markdown makes it easy to build webpages straight from .Rmd files.
+
+- The R Markdown website is itself built with R Markdown. Example Code.
+
+- flexdashboard extends R Markdown to make administrative dashboards. Its website is also built from R Markdown. Example Code.
+
+- Bookdown extends R Markdown to make books. Its website is built with R Markdown and CSS styling. Example Code.
+
+- profvis provides profiling tools for R code, as well as a website made with R Markdown. Example Code.
+
+## Modelos
+
+- The JSS article template in the rticles package formats an R Markdown document to meet the style guidelines of the Journal of Statistical Software. Example Code
+
+- The rjournal article template in the rticles package formats an R Markdown document to meet the style guidelings of the R Journal. Example Code
+
+- The skeleton template is one of several provided in Bob Rudis’ markdowntemplates package. Example Code
+
+- Steve Miller’s CV template formats an R Markdown file into a Curriculum Vitae (CV). Example Code
+
+
+# Live Coding
+
+## Paper em pdf
+
+RAP - Usando bibliografia
+
+[PDAD](http://www.codeplan.df.gov.br/wp-content/uploads/2020/06/Itapo%C3%A3.pdf)
+
+## Relatório em html
+
+[Compras públicas](http://www.codeplan.df.gov.br/wp-content/uploads/2018/02/Cartografia-das-compras-p%C3%BAblicas-de-bens-e-servi%C3%A7os-privados-no-DF.html)
+
+[ANIPES](https://rpubs.com/fredbsr/ANIPES)
+
+## Slides em html
+
+Usando CSS
+
+[Apresentação COVID](https://github.com/fredbsr/covid19br_OP)
+
+## Reprodutibilidade
+
+- Boas práticas
+
+- Projetos
+
+- Git/github
